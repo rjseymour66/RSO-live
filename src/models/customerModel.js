@@ -7,6 +7,7 @@ const Schema = mongoose.Schema;
 
 
 const BillingSchema = new Schema({
+  _id: false,
   paypal_email: {
     type: String,
     required: 'Enter your PayPal account email'
@@ -30,12 +31,11 @@ const BillingSchema = new Schema({
   billing_zip: {
     type: String,
     default: undefined,
-  },
-  _id: false,
-  id: false
+  }
 })
 
 const ShippingSchema = new Schema({
+  _id: false,
   shipping_address1: {
     type: String,
     required: 'Address 1 required'
@@ -54,9 +54,7 @@ const ShippingSchema = new Schema({
   shipping_zip: {
     type: String,
     required: 'Zip code required'
-  },
-  _id: false,
-  id: false
+  }
 })
 
 const CustomerSchema = new Schema({
@@ -109,6 +107,11 @@ CustomerSchema.methods.comparePassword = (password, hashPassword) => {
 
 
 
-module.exports = mongoose.model('Billing', BillingSchema);
-module.exports = mongoose.model('Shipping', ShippingSchema);
+// module.exports = mongoose.model('Billing', BillingSchema);
+// module.exports = mongoose.model('Shipping', ShippingSchema);
 module.exports = mongoose.model('Customer', CustomerSchema);
+
+module.exports = {
+  BillingSchema,
+  ShippingSchema
+}

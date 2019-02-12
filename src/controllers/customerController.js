@@ -60,10 +60,8 @@ const getAllCustomerOrders = (req, res) => {
   .sort(sort)
   .skip(offset)
   .exec((err, orders) => {
-    if(customerId !== req.user._id) {
-      res.status(404).json({ 
-        message: "Insufficient privileges."
-      })
+    if(err) {
+      res.status(404).json({ message: "Insufficient privileges." })
       } else {
         res.json(orders)
       }

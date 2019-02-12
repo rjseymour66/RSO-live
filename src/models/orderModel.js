@@ -1,11 +1,13 @@
 const mongoose = require('mongoose')
-const { ShippingSchema, BillingSchema } = require('./customerModel');
+const {ShippingSchema} = require('./customerModel');
+const { BillingSchema } = require('./customerModel');
 
 const Schema = mongoose.Schema;
 
 
 
 const Customer2Schema = new Schema({
+  _id: false,
   username: {
     type: String,
     required: 'Customer username required'
@@ -21,9 +23,7 @@ const Customer2Schema = new Schema({
   lastName: {
     type: String,
     required: 'Customer last name required'
-  },
-  _id: false,
-  id: false
+  }
 })
 
 

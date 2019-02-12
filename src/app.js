@@ -1,4 +1,5 @@
-require('./config/config');
+// require('./config/config');
+require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -9,15 +10,15 @@ const jsonwebtoken = require('jsonwebtoken');
 const router = require('./routes/routes');
 
 
-
 // express server
 const app = express();
+
 
 // CONNECT DB
 // =================================================================
 
-const PORT = process.env.PORT || 4000;
-const URL = process.env.DATABASE_URL || 'mongodb://localhost/record-stack-overflow'
+const PORT = process.env.PORT// || 4000;
+const URL = process.env.DATABASE_URL// || 'mongodb://localhost/record-stack-overflow'
 
 mongoose.connect(URL, () => {
   console.log(`The database is connected!`);
@@ -70,8 +71,7 @@ app.use(morgan('tiny'))
 app.use(express.static('public'));
 
 // router
-app.use(router)
-
+app.use('/', router)
 
 // Server ===========================================
 

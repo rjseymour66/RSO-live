@@ -48,6 +48,7 @@ const registerCustomer = (req, res) => {
 };
 
 
+
 // LOGIN Customer GET TOKEN
 
 const login = (req, res) => {
@@ -167,7 +168,7 @@ const createdBy = (req, res, next) => {
   }
 }
 
-const orderedBy = (req, res, next) => {
+const verifyThisCustomer = (req, res, next) => {
   const userParam = req.params.customer_id
   const userId = req.user._id
 
@@ -181,6 +182,8 @@ const orderedBy = (req, res, next) => {
   }
 }
 
+
+
 module.exports = {
   registerCustomer,
   login,
@@ -189,5 +192,5 @@ module.exports = {
   loginRequired,
   verifyMerchant,
   createdBy,
-  orderedBy
+  verifyThisCustomer
 }

@@ -41,7 +41,7 @@ const {
   loginMerchant,
   verifyMerchant,
   createdBy,
-  orderedBy
+  verifyThisCustomer
 } = require('../middleware/authenticate')
 
 
@@ -69,9 +69,9 @@ router.delete('/api/v1/records/:record_id/merchants/:merchant_id', loginRequired
 router.post('/api/v1/orders/merchants/:merchant_id/records/:record_id', loginRequired, createOrder)// X
 router.get('/api/v1/orders/:order_id', loginRequired, getOrder) // X
 router.get('/api/v1/orders/merchants/:merchant_id', loginRequired, createdBy, getAllMerchantOrders) // X
-router.get('/api/v1/orders/customers/:customer_id', loginRequired, getAllCustomerOrders) // X
+// router.get('/api/v1/orders/customers/:customer_id', loginRequired, verifyThisCustomer, getAllCustomerOrders) // X
 router.put('/api/v1/orders/:order_id', loginRequired, updateOrderById) // DONE MAKE PRIVATE
-router.delete('/api/v1/orders/:order_id/customers/:customer_id', loginRequired, orderedBy, cancelOrder) // delete order for customer
+// router.delete('/api/v1/orders/:order_id/customers/:customer_id', loginRequired, verifyThisCustomer, cancelOrder) // delete order for customer
 
 
 // MERCHANT ROUTES
@@ -79,8 +79,8 @@ router.get('/api/v1/merchants/:merchant_id', loginRequired, getMerchant) // X
 router.put('/api/v1/merchants/:merchant_id', loginRequired, updateMerchantById) // X
 
 // CUSTOMER ROUTES
-router.get('/api/v1/customers/:customer_id', loginRequired, getCustomerInfo) // get Customer info PRIVATE
-router.put('/api/v1/customers/:customer_id', loginRequired, updateCustomerById) // update Customer info PRIVATE
+// router.get('/api/v1/customers/:customer_id', loginRequired, getCustomerInfo) // get Customer info PRIVATE
+// router.put('/api/v1/customers/:customer_id', loginRequired, updateCustomerById) // update Customer info PRIVATE
 
 
 
