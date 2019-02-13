@@ -81,7 +81,7 @@ router.put('/api/v1/merchants/:merchant_id', loginRequired, updateMerchantById) 
 
 // CUSTOMER ROUTES
 router.get('/api/v1/customers/:customer_id', loginRequired, verifyThisCustomer, getCustomerInfo) // YES
-router.put('/api/v1/customers/:customer_id', loginRequired, updateCustomerById) // update Customer info PRIVATE
+router.put('/api/v1/customers/:customer_id', loginRequired, updateCustomerById) // YES
 
 
 
