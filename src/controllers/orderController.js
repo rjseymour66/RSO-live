@@ -44,6 +44,27 @@ const createOrder = (req, res) => {
   });
 };
 
+// router.get('/api/v1/customers/:customer_id/orders') // get orders by customer PRIVATE - _createdBy === :customer_id
+
+const getAllCustomerOrders = (req, res) => {
+  const customerId = req.params.customer_id
+
+  const limit = parseInt(req.query.limit)
+  const sort = { created_date: req.query.sort }
+  const offset = parseInt(req.query.offset)
+  
+  Order.find({_createdBy : customerId} )
+  .limit(limit)
+  .sort(sort)
+  .skip(offset)
+  .exec((err, orders) => {
+    if(err) {
+      res.status(404).json({ message: "Insufficient privileges." })
+      } else {
+        res.json(orders)
+      }
+  })
+}
 
 // RETRIEVE / GET ONE ORDER
 const getOrder = (req, res) => {
@@ -132,10 +153,29 @@ const deleteOrder = (req, res) => {
   });
 };
 
+// router.delete('/api/v1/customers/:customer_id/orders/:order_id) // delete order for customer
+
+const cancelOrder = (req, res) => {
+  const orderId = { _id: req.params.order_id }
+  Order.remove(orderId, (err, data) => {
+    if(err) {
+      res.status(404).json({ 
+        ERROR: "Order not found" 
+      })
+    } else {
+      res.json({ 
+        SUCCESS: 'Order deleted' 
+      })
+    }
+  })
+};
+
 module.exports = {
   createOrder,
   getOrder,
   getAllOrders,
   updateOrderById,
-  deleteOrder
+  deleteOrder,
+  getAllCustomerOrders,
+  cancelOrder
 }

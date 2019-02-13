@@ -176,12 +176,11 @@ const verifyThisCustomer = (req, res, next) => {
   console.log('*****************  Record ID', userParam);
 
   if(userParam !== userId){
-    res.status(404).json({ ERROR: "Insufficient privileges" })  
+    res.status(404).json({ error: "Insufficient privileges" })  
   } else {
       next();
   }
 }
-
 
 
 module.exports = {

@@ -13,6 +13,9 @@ const {
   createOrder,
   getOrder,
   updateOrderById,
+  getAllOrders,
+  getAllCustomerOrders,
+  cancelOrder
 } = require('../controllers/orderController'); 
 
 // MERCHANT CONTROLLER
@@ -27,9 +30,7 @@ const {
 // CUSTOMER CONTROLLER
 const {
   getCustomerInfo,
-  updateCustomerById,
-  getAllCustomerOrders,
-  cancelOrder
+  updateCustomerById
 } = require('../controllers/customerController');
 
 // MIDDLEWARE
@@ -48,40 +49,39 @@ const {
 
 
 // AUTHORIZATION ROUTES / CUSTOMER ROUTES
-router.post('/auth/register/customer', registerCustomer) // WORKS
-router.post('/auth/login/customer', login) // WORKS
+router.post('/auth/register/customer', registerCustomer) // YES
+router.post('/auth/login/customer', login) // YES
 
 
 // AUTHORIZATION ROUTES / MERCHANT
-router.post('/auth/register/merchant', registerMerchant) // X
-router.post('/auth/login/merchant', loginMerchant) // X
+router.post('/auth/register/merchant', registerMerchant) // YES
+router.post('/auth/login/merchant', loginMerchant) // YES
 
 
 // RECORD ROUTES
-router.post('/api/v1/records',  verifyMerchant, loginRequired, createRecord); // X
-router.get('/api/v1/records', loginRequired, getAllRecords); // X 
-router.get('/api/v1/records/merchants/:merchant_id', loginRequired, getAllMerchantRecords) // X
-router.put('/api/v1/records/:record_id', verifyMerchant, loginRequired, updateRecordById) // X
-router.delete('/api/v1/records/:record_id/merchants/:merchant_id', loginRequired, createdBy, deleteRecord) // X
+router.post('/api/v1/records',  verifyMerchant, loginRequired, createRecord); // YES
+router.get('/api/v1/records', loginRequired, getAllRecords); // YES 
+router.get('/api/v1/records/merchants/:merchant_id', loginRequired, getAllMerchantRecords) // YES
+router.put('/api/v1/records/:record_id', verifyMerchant, loginRequired, updateRecordById) // YES
+router.delete('/api/v1/records/:record_id/merchants/:merchant_id', loginRequired, createdBy, deleteRecord) // YES
 
 
 // ORDER ROUTES
-router.post('/api/v1/orders/merchants/:merchant_id/records/:record_id', loginRequired, createOrder)// X
-router.get('/api/v1/orders/:order_id', loginRequired, getOrder) // X
-router.get('/api/v1/orders/merchants/:merchant_id', loginRequired, createdBy, getAllMerchantOrders) // X
-// router.get('/api/v1/orders/customers/:customer_id', loginRequired, verifyThisCustomer, getAllCustomerOrders) // X
-router.put('/api/v1/orders/:order_id', loginRequired, updateOrderById) // DONE MAKE PRIVATE
-// router.delete('/api/v1/orders/:order_id/customers/:customer_id', loginRequired, verifyThisCustomer, cancelOrder) // delete order for customer
+router.post('/api/v1/orders/merchants/:merchant_id/records/:record_id', loginRequired, createOrder)// YES
+// router.get('/api/v1/orders/:order_id', loginRequired, getOrder) // Security risk w/Paypay email
+router.get('/api/v1/orders/merchants/:merchant_id', loginRequired, createdBy, getAllMerchantOrders) // YES
+router.get('/api/v1/orders/customers/:customer_id', loginRequired, verifyThisCustomer, getAllCustomerOrders) // YES
+router.put('/api/v1/orders/:order_id', loginRequired, updateOrderById) // YES
+router.delete('/api/v1/orders/:order_id/customers/:customer_id', loginRequired, verifyThisCustomer, cancelOrder) // YES
 
 
 // MERCHANT ROUTES
-router.get('/api/v1/merchants/:merchant_id', loginRequired, getMerchant) // X
-router.put('/api/v1/merchants/:merchant_id', loginRequired, updateMerchantById) // X
+router.get('/api/v1/merchants/:merchant_id', loginRequired, getMerchant) // YES
+router.put('/api/v1/merchants/:merchant_id', loginRequired, updateMerchantById) // YES
 
 // CUSTOMER ROUTES
-// router.get('/api/v1/customers/:customer_id', loginRequired, getCustomerInfo) // get Customer info PRIVATE
-// router.put('/api/v1/customers/:customer_id', loginRequired, updateCustomerById) // update Customer info PRIVATE
-
+router.get('/api/v1/customers/:customer_id', loginRequired, verifyThisCustomer, getCustomerInfo) // YES
+router.put('/api/v1/customers/:customer_id', loginRequired, updateCustomerById) // update Customer info PRIVATE
 
 
 
