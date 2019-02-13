@@ -17,7 +17,7 @@ const app = express();
 // CONNECT DB
 // =================================================================
 
-const PORT = process.env.PORT// || 4000;
+const PORT = process.env.PORT || 4000;
 const URL = process.env.DATABASE_URL// || 'mongodb://localhost/record-stack-overflow'
 
 mongoose.connect(URL, () => {
