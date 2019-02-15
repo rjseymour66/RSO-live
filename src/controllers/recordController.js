@@ -19,7 +19,8 @@ const createRecord = (req, res) => {
   record.save((err, record) => {
     if (err) {
       return res.status(400).json({ 
-        error_message: "Request failed." 
+        error_message: "Request failed",
+        response_code: 400 
       })
     } else {
       return res.json(record);
@@ -42,7 +43,8 @@ const getAllRecords = (req, res) => {
       .exec((err, record) => {
         if (err) {
           res.status(400).json({ 
-            error: "Request failed" 
+            error_message: "Request failed",
+            response_code: 400 
           })
         } else {
           res.json(record)
@@ -55,7 +57,10 @@ const getAllRecords = (req, res) => {
       .skip(offset)
       .exec((err, record) => {
         if (err) {
-          res.status(400).json({  error: "Request failed"  })
+          res.status(400).json({ 
+            error_message: "Request failed",
+            response_code: 400
+          })
         } else {
           res.json(record)
         }
@@ -71,7 +76,8 @@ const updateRecordById = (req, res) => {
   Record.findOneAndUpdate(id, updatedInfo, { new: true }, (err, record) =>{
     if(merchId !== record._createdBy) {
       res.status(404).json({ 
-        error: "Record not found. Check record id." 
+        error_message: "Record not found. Check record id",
+        response_code: 404 
       })
     } else {
     res.json(record)
