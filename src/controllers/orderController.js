@@ -178,7 +178,8 @@ const cancelOrder = (req, res) => {
       })
     } else {
       res.json({ 
-        success: 'Order deleted' 
+        success_message: 'Order deleted',
+        response_code: 200
       })
     }
   })

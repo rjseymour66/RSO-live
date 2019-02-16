@@ -139,7 +139,10 @@ const deleteRecord = (req, res) => {
         response_code: 404
       })
     } else {
-      res.json({  success: 'Record deleted'  })
+      res.json({  
+        success_message: 'Record deleted',
+        response_code: 200
+      })
     }
   })
 };
