@@ -12,16 +12,15 @@ const getCustomerInfo = (req, res) => {
   Customer.findById(customerId)
   .exec((err, customer) => {
     if (err) {
-      res.status(400).json({ error: "Request failed. Check customer id" })
+      res.status(400).json({ 
+      error_message: "Request failed. Check customer id",
+      response_code: 400 })
     } else {
       res.json(customer)
     }
   })
   
 }
-
-
-
 
 // router.put('/api/v1/customers/:customer_id') // update customer info PRIVATE
 
@@ -34,7 +33,8 @@ const updateCustomerById = (req, res) => {
     Customer.findOneAndUpdate(customer_id, updatedInfo, { new: true }, (err, customer) =>{
       if(customerId !== customerParam) {
         res.status(404).json({ 
-          ERROR: "Insufficient privileges" 
+          error_message: "Insufficient privileges",
+          response_code: 400 
         })
       } else {
       res.json(customer)

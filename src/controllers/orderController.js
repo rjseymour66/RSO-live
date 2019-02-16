@@ -37,7 +37,10 @@ const createOrder = (req, res) => {
   })
   order.save((err, order) => {
     if (err) {
-      return res.status(400).send({ error: "order not created" });
+      return res.status(400).send({ 
+        error_message: "Order not created",
+        response_code: 400
+      });
     } else {
       return res.json(order);
     }
@@ -59,7 +62,10 @@ const getAllCustomerOrders = (req, res) => {
   .skip(offset)
   .exec((err, orders) => {
     if(err) {
-      res.status(404).json({ message: "Insufficient privileges." })
+      res.status(404).json({ 
+        error_message: "Insufficient privileges",
+        response_code: 404
+       })
       } else {
         res.json(orders)
       }
@@ -73,7 +79,10 @@ const getOrder = (req, res) => {
   Order.findById(id)
   .exec((err, order) => {
     if(err) {
-      res.status(400).json({ error_message: "Order not found", response_code: 404 })
+      res.status(400).json({ 
+        error_message: "Order not found",
+        response_code: 404 
+      })
     } else {
       res.json(order)
     }
@@ -96,7 +105,8 @@ const getAllOrders = (req, res) => {
       .exec((err, data) => {
         if (err) {
           res.status(400).json({ 
-            ERROR: "Request failed"
+            error_message: "Request failed",
+            response_code: 400
           })
         } else {
           res.json(data)
@@ -111,7 +121,8 @@ const getAllOrders = (req, res) => {
       .exec((err, data) => {
         if (err) {
           res.status(400).json({ 
-            ERROR: "Request failed."
+            error_message: "Request failed",
+            response_code: 400
           })
         } else {
           res.json(data)
@@ -129,7 +140,8 @@ const getAllOrders = (req, res) => {
     Order.findOneAndUpdate(id, updatedInfo, { new: true }, (err, order) => {
       if (merchantId !== order.merchant_id) {
         res.status(404).json({ 
-          error: "Order not found. Check order id."
+          error_message: "Order not found. Check order id",
+          response_code: 404
       })
       } else {
         res.json(order)
@@ -143,11 +155,13 @@ const deleteOrder = (req, res) => {
   Order.remove({ _id: req.params.order_id }, (err, order) => {
     if (err) {
       res.status(404).json({ 
-        error: "Order not found. Check order id."
+        error_message: "Order not found. Check order id",
+        response_code: 404
       })
     } else {
       res.json({
-        success: 'Order object deleted'
+        success: 'Order object deleted',
+        response_code: 200
       })
     }
   });

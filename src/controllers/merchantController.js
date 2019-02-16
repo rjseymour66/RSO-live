@@ -23,7 +23,10 @@ const getAllMerchantRecords = (req, res) => {
   .skip(offset)
   .exec((err, data) => {
     if(err) {
-      res.status(400).json({error: "Request failed" })
+      res.status(400).json({
+        error_message: "Request failed",
+        response_code: 400
+      })
     } else {
       res.json(data)
     }
@@ -47,7 +50,8 @@ const getAllMerchantOrders = (req, res) => {
   .exec((err, orders) => {
       if(err) {
         res.status(400).json({ 
-          error: "Check merchant id" 
+          error_message: "Check merchant id",
+          response_code: 400
         })
       } else {
         res.json(orders)
@@ -69,7 +73,8 @@ const getMerchant = (req, res) => {
     .exec((err, merchant) => {
       if(err) {
         res.status(400).json({ 
-          error: "Check merchant id" 
+          error_message: "Check merchant id",
+          response_code: 400
         })
       } else {
         res.json({
@@ -107,7 +112,8 @@ const updateMerchantById = (req, res) => {
   Merchant.findOneAndUpdate(merchant_id, updatedInfo, { new: true }, (err, merchant) =>{
     if(merchId !== merchParam) {
       res.status(404).json({ 
-        error: "Insufficient privileges" 
+        error_message: "Insufficient privileges",
+        response_code: 404
       })
     } else {
     res.json(merchant)
@@ -132,7 +138,10 @@ const deleteRecord = (req, res) => {
         error: "Record was not found. Check record ID."
       })
     } else {
-      res.json({  success: 'Record deleted'  })
+      res.json({ 
+        error_message: "Record was not found. Check record ID.",
+        response_code: 404
+      })
     }
   })
 };
