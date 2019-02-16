@@ -135,12 +135,13 @@ const deleteRecord = (req, res) => {
   Record.remove(recId, (err, data) => {
     if(err) {
       res.status(404).json({ 
-        error: "Record was not found. Check record ID."
-      })
-    } else {
-      res.json({ 
         error_message: "Record was not found. Check record ID.",
         response_code: 404
+      })
+    } else {
+      res.json({  
+        success_message: 'Record deleted',
+        response_code: 200
       })
     }
   })
