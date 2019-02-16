@@ -11,9 +11,7 @@ const {
 // ORDER CONTROLLER
 const {
   createOrder,
-  getOrder,
   updateOrderById,
-  getAllOrders,
   getAllCustomerOrders,
   cancelOrder
 } = require('../controllers/orderController'); 
@@ -62,7 +60,7 @@ router.post('/auth/login/merchant', loginMerchant) // YES
 router.post('/api/v1/records',  verifyMerchant, loginRequired, createRecord); // YES
 router.get('/api/v1/records', loginRequired, getAllRecords); // YES 
 router.get('/api/v1/records/merchants/:merchant_id', loginRequired, getAllMerchantRecords) // YES
-router.put('/api/v1/records/:record_id', verifyMerchant, loginRequired, updateRecordById) // YES
+router.put('/api/v1/records/:record_id', loginRequired, updateRecordById) // YES
 router.delete('/api/v1/records/:record_id/merchants/:merchant_id', loginRequired, createdBy, deleteRecord) // YES
 
 
