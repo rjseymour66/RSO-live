@@ -37,8 +37,9 @@ const registerCustomer = (req, res) => {
   newCustomer.hashPassword = bcrypt.hashSync(req.body.password, 10);
   newCustomer.save((err, customer) => {
     if (err) {
-      return res.status(400).send({
-        message: err
+      return res.status(400).send({ 
+        error_message: "An error occurred",
+        response_code: 400
       });
     } else {
       customer.hashPassword = undefined;
@@ -55,10 +56,16 @@ const login = (req, res) => {
   Customer.findOne({ email: req.body.email }, (err, customer) => {
     if (err) throw err;
     if (!customer) {
-      res.status(401).json({ ERROR: 'Authentication failed. No customer found.' });
+      res.status(401).json({ 
+        error_message: 'Authentication failed. No customer found.',
+        response_code: 401
+      });
     } else if (customer) {
       if (!customer.comparePassword(req.body.password, customer.hashPassword)) {
-        res.status(401).json({ ERROR: 'Authentication failed. Wrong password.' });
+        res.status(401).json({ 
+          error_message: 'Authentication failed. Wrong password.',
+          response_code: 401
+        });
       } else {
         return res.json({ 'secret token' : jwt.sign({ 
           email: customer.email, 
@@ -94,7 +101,8 @@ const registerMerchant = (req, res) => {
   newMerchant.save((err, merchant) => {
     if (err) {
       return res.status(400).send({
-        message: err
+        error_message: "An error occurred",
+        response_code: 400
       });
     } else {
       newMerchant.hashPassword = undefined;
@@ -112,10 +120,16 @@ const loginMerchant = (req, res) => {
   }, (err, merchant) => {
     if (err) throw err;
     if (!merchant) {
-      res.status(401).json({ ERROR: 'Authentication failed. No merchant found.' });
+      res.status(401).json({ 
+        error_message: 'Authentication failed. No merchant found.',
+        response_code: 401
+      });
     } else if (merchant) {
       if (!merchant.comparePassword(req.body.password, merchant.hashPassword)) {
-        res.status(401).json({ ERROR: 'Authentication failed. Wrong password.' });
+        res.status(401).json({ 
+          error_message: 'Authentication failed. Wrong password.',
+          response_code: 401
+        });
       } else {
         return res.json({ 'secret token' : jwt.sign({ merchantAccount: merchant.merchantAccount, companyName: merchant.companyName, primaryContact: merchant.primaryContact, email: merchant.email, _id: merchant.id }, process.env.JWT_SECRET) });
       }
@@ -131,7 +145,10 @@ const loginRequired = (req, res, next) => {
 
     next();
   } else {
-    return res.status(401).json({ error: 'Unauthorized user' });
+    return res.status(401).json({ 
+      error_message: 'Unauthorized user',
+      response_code: 401
+    });
   }
 };
 
@@ -145,7 +162,10 @@ const verifyMerchant = (req, res, next) => {
 
   console.log('*********** merchantAccount', req.user.merchantAccount);
   if(!req.user.merchantAccount) {
-    res.status(404).json({error : 'Insufficient privileges'})
+    res.status(404).json({
+      error_message: 'Insufficient privileges',
+      response_code: 404
+    })
   } else
     next();
 }
@@ -162,7 +182,10 @@ const createdBy = (req, res, next) => {
   console.log('*****************  Record ID', recId);
 
   if(merchId !== userId){
-    res.status(404).json({ error: "Insufficient privileges" })  
+    res.status(404).json({ 
+      error_message: "Insufficient privileges",
+      response_code: 404
+    })  
   } else {
       next();
   }
@@ -176,7 +199,10 @@ const verifyThisCustomer = (req, res, next) => {
   console.log('*****************  Record ID', userParam);
 
   if(userParam !== userId){
-    res.status(404).json({ error: "Insufficient privileges" })  
+    res.status(404).json({ 
+      error_message: "Insufficient privileges",
+      response_code: 404
+    })  
   } else {
       next();
   }
