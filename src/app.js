@@ -8,6 +8,7 @@ const morgan = require('morgan')
 const helmet = require('helmet')
 const jsonwebtoken = require('jsonwebtoken');
 const router = require('./routes/routes');
+const cors = require('cors');
 
 
 // express server
@@ -26,6 +27,9 @@ mongoose.connect(URL, () => {
 
 // MIDDLEWARE
 // =================================================================
+
+// add CORS
+app.use(cors());
 
 app.use((req, res, next) => {
   let now = new Date().toString();
