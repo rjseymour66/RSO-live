@@ -6,7 +6,7 @@ const Order = mongoose.model('Order', OrderSchema);
 
 
 // CREATE / POST NEW ORDER
-const createOrder = (req, res) => {
+exports.createOrder = (req, res) => {
 
   let order = new Order({
     record_id: req.params.record_id,
@@ -37,7 +37,7 @@ const createOrder = (req, res) => {
   })
   order.save((err, order) => {
     if (err) {
-      return res.status(400).send({ 
+      return res.status(400).send({
         error_message: "Order not created",
         response_code: 400
       });
@@ -49,62 +49,62 @@ const createOrder = (req, res) => {
 
 // router.get('/api/v1/customers/:customer_id/orders') // get orders by customer PRIVATE - _createdBy === :customer_id
 
-const getAllCustomerOrders = (req, res) => {
+exports.getAllCustomerOrders = (req, res) => {
   const customerId = req.params.customer_id
 
   const limit = parseInt(req.query.limit)
   const sort = { created_date: req.query.sort }
   const offset = parseInt(req.query.offset)
-  
-  Order.find({_createdBy : customerId} )
-  .limit(limit)
-  .sort(sort)
-  .skip(offset)
-  .exec((err, orders) => {
-    if(err) {
-      res.status(404).json({ 
-        error_message: "Insufficient privileges",
-        response_code: 404
-       })
+
+  Order.find({ _createdBy: customerId })
+    .limit(limit)
+    .sort(sort)
+    .skip(offset)
+    .exec((err, orders) => {
+      if (err) {
+        res.status(404).json({
+          error_message: "Insufficient privileges",
+          response_code: 404
+        })
       } else {
         res.json(orders)
       }
-  })
+    })
 }
 
 // RETRIEVE / GET ONE ORDER
-const getOrder = (req, res) => {
+exports.getOrder = (req, res) => {
   const id = req.params.order_id
 
   Order.findById(id)
-  .exec((err, order) => {
-    if(err) {
-      res.status(400).json({ 
-        error_message: "Order not found",
-        response_code: 404 
-      })
-    } else {
-      res.json(order)
-    }
-  })
+    .exec((err, order) => {
+      if (err) {
+        res.status(400).json({
+          error_message: "Order not found",
+          response_code: 404
+        })
+      } else {
+        res.json(order)
+      }
+    })
 };
 
 
 // RETRIEVE / GET ALL ORDERS
-const getAllOrders = (req, res) => {
+exports.getAllOrders = (req, res) => {
   const limit = parseInt(req.query.limit)
   const offset = parseInt(req.query.offset)
   const lastName = req.query.lastName
-  const sort = { lastName : req.query.lastname }
+  const sort = { lastName: req.query.lastname }
 
-    if(lastName) {
-      Order.find({ customer_lastName : lastName })
+  if (lastName) {
+    Order.find({ customer_lastName: lastName })
       .limit(limit)
       .sort(sort)
       .skip(offset)
       .exec((err, data) => {
         if (err) {
-          res.status(400).json({ 
+          res.status(400).json({
             error_message: "Request failed",
             response_code: 400
           })
@@ -113,14 +113,14 @@ const getAllOrders = (req, res) => {
         }
       });
 
-    } else {
-      Order.find()
+  } else {
+    Order.find()
       .limit(limit)
       .sort(sort)
       .skip(offset)
       .exec((err, data) => {
         if (err) {
-          res.status(400).json({ 
+          res.status(400).json({
             error_message: "Request failed",
             response_code: 400
           })
@@ -129,32 +129,32 @@ const getAllOrders = (req, res) => {
         }
       });
 
-    }
   }
+}
 
-  // Update an order
-  const updateOrderById = (req, res) => {
-    const id = { _id: req.params.order_id }
-    const updatedInfo = req.body;
-    const merchantId = req.user._id
-    Order.findOneAndUpdate(id, updatedInfo, { new: true }, (err, order) => {
-      if (merchantId !== order.merchant_id) {
-        res.status(404).json({ 
-          error_message: "Order not found. Check order id",
-          response_code: 404
+// Update an order
+exports.updateOrderById = (req, res) => {
+  const id = { _id: req.params.order_id }
+  const updatedInfo = req.body;
+  const merchantId = req.user._id
+  Order.findOneAndUpdate(id, updatedInfo, { new: true }, (err, order) => {
+    if (merchantId !== order.merchant_id) {
+      res.status(404).json({
+        error_message: "Order not found. Check order id",
+        response_code: 404
       })
-      } else {
-        res.json(order)
-      }
-    });
-  };
+    } else {
+      res.json(order)
+    }
+  });
+};
 
 // delete an order
 
-const deleteOrder = (req, res) => {
+exports.deleteOrder = (req, res) => {
   Order.remove({ _id: req.params.order_id }, (err, order) => {
     if (err) {
-      res.status(404).json({ 
+      res.status(404).json({
         error_message: "Order not found. Check order id",
         response_code: 404
       })
@@ -169,29 +169,19 @@ const deleteOrder = (req, res) => {
 
 // router.delete('/api/v1/customers/:customer_id/orders/:order_id) // delete order for customer
 
-const cancelOrder = (req, res) => {
+exports.cancelOrder = (req, res) => {
   const orderId = { _id: req.params.order_id }
   Order.remove(orderId, (err, data) => {
-    if(err) {
-      res.status(404).json({ 
+    if (err) {
+      res.status(404).json({
         error_message: "Order not found",
         response_code: 404
       })
     } else {
-      res.json({ 
+      res.json({
         success_message: 'Order deleted',
         response_code: 200
       })
     }
   })
 };
-
-module.exports = {
-  createOrder,
-  getOrder,
-  getAllOrders,
-  updateOrderById,
-  deleteOrder,
-  getAllCustomerOrders,
-  cancelOrder
-}

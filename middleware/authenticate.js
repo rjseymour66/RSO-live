@@ -11,7 +11,7 @@ const Merchant = mongoose.model('Merchant', MerchantSchema)
 
 // REGISTER NEW Customer
 
-const registerCustomer = (req, res) => {
+exports.registerCustomer = (req, res) => {
   const newCustomer = new Customer({
     username: req.body.username,
     firstName: req.body.firstName,
@@ -32,12 +32,12 @@ const registerCustomer = (req, res) => {
       billing_city: req.body.billing_city,
       billing_state: req.body.billing_state,
       billing_zip: req.body.billing_zip
-    }]    
+    }]
   });
   newCustomer.hashPassword = bcrypt.hashSync(req.body.password, 10);
   newCustomer.save((err, customer) => {
     if (err) {
-      return res.status(400).send({ 
+      return res.status(400).send({
         error_message: "An error occurred",
         response_code: 400
       });
@@ -52,27 +52,29 @@ const registerCustomer = (req, res) => {
 
 // LOGIN Customer GET TOKEN
 
-const login = (req, res) => {
+exports.login = (req, res) => {
   Customer.findOne({ email: req.body.email }, (err, customer) => {
     if (err) throw err;
     if (!customer) {
-      res.status(401).json({ 
+      res.status(401).json({
         error_message: 'Authentication failed. No customer found.',
         response_code: 401
       });
     } else if (customer) {
       if (!customer.comparePassword(req.body.password, customer.hashPassword)) {
-        res.status(401).json({ 
+        res.status(401).json({
           error_message: 'Authentication failed. Wrong password.',
           response_code: 401
         });
       } else {
-        return res.json({ 'secret token' : jwt.sign({ 
-          email: customer.email, 
-          username: customer.username, 
-          _id: customer.id,
-          firstName: customer.firstName,
-          lastName: customer.lastName }, process.env.JWT_SECRET) 
+        return res.json({
+          'secret token': jwt.sign({
+            email: customer.email,
+            username: customer.username,
+            _id: customer.id,
+            firstName: customer.firstName,
+            lastName: customer.lastName
+          }, process.env.JWT_SECRET)
         });
       }
     }
@@ -82,7 +84,7 @@ const login = (req, res) => {
 
 // REGISTER NEW MERCHANT
 
-const registerMerchant = (req, res) => {
+exports.registerMerchant = (req, res) => {
   const newMerchant = new Merchant({
     companyName: req.body.companyName,
     primaryContact: req.body.primaryContact,
@@ -114,24 +116,24 @@ const registerMerchant = (req, res) => {
 // LOGIN MERCHANT GET TOKEN
 
 
-const loginMerchant = (req, res) => {
+exports.loginMerchant = (req, res) => {
   Merchant.findOne({
     email: req.body.email
   }, (err, merchant) => {
     if (err) throw err;
     if (!merchant) {
-      res.status(401).json({ 
+      res.status(401).json({
         error_message: 'Authentication failed. No merchant found.',
         response_code: 401
       });
     } else if (merchant) {
       if (!merchant.comparePassword(req.body.password, merchant.hashPassword)) {
-        res.status(401).json({ 
+        res.status(401).json({
           error_message: 'Authentication failed. Wrong password.',
           response_code: 401
         });
       } else {
-        return res.json({ 'secret token' : jwt.sign({ merchantAccount: merchant.merchantAccount, companyName: merchant.companyName, primaryContact: merchant.primaryContact, email: merchant.email, _id: merchant.id }, process.env.JWT_SECRET) });
+        return res.json({ 'secret token': jwt.sign({ merchantAccount: merchant.merchantAccount, companyName: merchant.companyName, primaryContact: merchant.primaryContact, email: merchant.email, _id: merchant.id }, process.env.JWT_SECRET) });
       }
     }
   });
@@ -140,12 +142,12 @@ const loginMerchant = (req, res) => {
 
 
 // CUSTOMER LOGIN REQUIRED
-const loginRequired = (req, res, next) => {
+exports.loginRequired = (req, res, next) => {
   if (req.user) {
 
     next();
   } else {
-    return res.status(401).json({ 
+    return res.status(401).json({
       error_message: 'Unauthorized user',
       response_code: 401
     });
@@ -158,10 +160,10 @@ const loginRequired = (req, res, next) => {
 // IS MERCHANT MIDDLEWARE
 
 
-const verifyMerchant = (req, res, next) => {
+exports.verifyMerchant = (req, res, next) => {
 
   console.log('*********** merchantAccount', req.user.merchantAccount);
-  if(!req.user.merchantAccount) {
+  if (!req.user.merchantAccount) {
     res.status(404).json({
       error_message: 'Insufficient privileges',
       response_code: 404
@@ -172,7 +174,7 @@ const verifyMerchant = (req, res, next) => {
 
 // CREATED BY MIDDLEWARE - MERCHANT
 
-const createdBy = (req, res, next) => {
+exports.createdBy = (req, res, next) => {
   const merchId = req.params.merchant_id;
   const userId = req.user._id
   const recId = req.params.record_id;
@@ -181,41 +183,30 @@ const createdBy = (req, res, next) => {
   console.log('*****************    User ID', userId);
   console.log('*****************  Record ID', recId);
 
-  if(merchId !== userId){
-    res.status(404).json({ 
+  if (merchId !== userId) {
+    res.status(404).json({
       error_message: "Insufficient privileges",
       response_code: 404
-    })  
+    })
   } else {
-      next();
+    next();
   }
 }
 
-const verifyThisCustomer = (req, res, next) => {
+exports.verifyThisCustomer = (req, res, next) => {
   const userParam = req.params.customer_id
   const userId = req.user._id
 
   console.log('*****************    User ID', userId);
   console.log('*****************  Record ID', userParam);
 
-  if(userParam !== userId){
-    res.status(404).json({ 
+  if (userParam !== userId) {
+    res.status(404).json({
       error_message: "Insufficient privileges",
       response_code: 404
-    })  
+    })
   } else {
-      next();
+    next();
   }
 }
 
-
-module.exports = {
-  registerCustomer,
-  login,
-  registerMerchant,
-  loginMerchant,
-  loginRequired,
-  verifyMerchant,
-  createdBy,
-  verifyThisCustomer
-}

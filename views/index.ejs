@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+    integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/index.css">
+  <title>Record Stack Overflow</title>
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <div class="container">
+      <a href="index.html" class="navbar-brand">Record Stack Overflow</a>
+      <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a href="index.html" class="nav-link">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="about.html" class="nav-link">About Us</a>
+          </li>
+          <li class="nav-item">
+            <a href="services.html" class="nav-link">Customer</a>
+          </li>
+          <li class="nav-item">
+            <a href="contact.html" class="nav-link">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- SHOWCASE -->
+
+  <section id="showcase" class="py-5">
+    <div class="primary-overlay text-light">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-6 text-left">
+            <h1 class="display-2 mt-5 pt-5">
+              Record Stack Overflow
+            </h1>
+            <p class="lead">Something cool about vinyl</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- HOME ICON SECTION -->
+
+  <section id="home-icons" class="py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 mb-4 text-center">
+          <a class="link" href="/customers/customer-login/">
+            <i class="fas fa-users fa-10x mb-2"></i>
+            <h3 class="words">Customers</h3>
+            <!-- <p class="words">Log in to your account or Register.</p> -->
+          </a>
+        </div>
+        <div class="col-md-4 mb-4 text-center">
+          <a class="link" href="#">
+            <i class="fas fa-handshake fa-10x mb-2"></i>
+            <h3 class="words">Merchants</h3>
+            <!-- <p class="words">Log in to your account or Register.</p> -->
+          </a>
+        </div>
+        <div class="col-md-4 mb-4 text-center">
+          <a class="link" href="https://rjseymour66.github.io/RSO-docs/" class="home">
+            <i class="fas fa-code fa-10x mb-2"></i>
+            <h3 class="words">Developer Documentation</h3>
+            <!-- <p class="words">Browse our Getting Started guide and our API documentation.</p> -->
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+
+  <!-- NEWSLETTER -->
+
+  <section id="newsletter" class="text-center p-5 bg-dark text-white">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h1>Sign Up For Our Newsletter!</h1>
+          <p>Want information on the latest products? Sign up for our newsletter!</p>
+          <form class="form-inline justify-content-center">
+            <input type="text" class="form-control mb-2 mr-2" placeholder="Enter Name">
+            <input type="text" class="form-control mb-2 mr-2" placeholder="Enter Email">
+            <button class="btn btn-primary mb-2">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- FOOTER -->
+
+  <footer id="main-footer" class="text-center p-4">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <p>Copyright &copy; <span id="year"></span> Record Stack Overflow</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+
+  <script src="http://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+
+
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+    integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+    crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js"></script>
+
+  <script>
+    // Get the current year for the copyright
+    $('#year').text(new Date().getFullYear());
+
+
+  </script>
+</body>
+
+</html>

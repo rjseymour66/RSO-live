@@ -7,7 +7,7 @@ const Record = mongoose.model('Record', RecordSchema);
 
 
 // CREATE / POST NEW RECORD
-const createRecord = (req, res) => {
+exports.createRecord = (req, res) => {
   let record = new Record({
     artist: req.body.artist,
     title: req.body.title,
@@ -18,9 +18,9 @@ const createRecord = (req, res) => {
   })
   record.save((err, record) => {
     if (err) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         error_message: "Request failed",
-        response_code: 400 
+        response_code: 400
       })
     } else {
       return res.json(record);
@@ -29,7 +29,7 @@ const createRecord = (req, res) => {
 };
 
 // RETRIEVE / GET ALL RECORDS
-const getAllRecords = (req, res) => {
+exports.getAllRecords = (req, res) => {
   const limit = parseInt(req.query.limit)
   const sort = { artist: req.query.sort }
   const offset = parseInt(req.query.offset)
@@ -42,9 +42,9 @@ const getAllRecords = (req, res) => {
       .skip(offset)
       .exec((err, record) => {
         if (err) {
-          res.status(400).json({ 
+          res.status(400).json({
             error_message: "Request failed",
-            response_code: 400 
+            response_code: 400
           })
         } else {
           res.json(record)
@@ -57,7 +57,7 @@ const getAllRecords = (req, res) => {
       .skip(offset)
       .exec((err, record) => {
         if (err) {
-          res.status(400).json({ 
+          res.status(400).json({
             error_message: "Request failed",
             response_code: 400
           })
@@ -69,24 +69,18 @@ const getAllRecords = (req, res) => {
 }
 
 
-const updateRecordById = (req, res) => {
+exports.updateRecordById = (req, res) => {
   const id = { _id: req.params.record_id };
   const updatedInfo = req.body;
   const merchId = req.user._id;
-  Record.findOneAndUpdate(id, updatedInfo, { new: true }, (err, record) =>{
-    if(merchId !== record._createdBy) {
-      res.status(404).json({ 
+  Record.findOneAndUpdate(id, updatedInfo, { new: true }, (err, record) => {
+    if (merchId !== record._createdBy) {
+      res.status(404).json({
         error_message: "Record not found. Check record id",
-        response_code: 404 
+        response_code: 404
       })
     } else {
-    res.json(record)
+      res.json(record)
     }
   })
 }
-
-module.exports = {
-  createRecord,
-  getAllRecords,
-  updateRecordById
-};

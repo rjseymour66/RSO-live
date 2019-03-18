@@ -11,45 +11,45 @@ const Order = mongoose.model('Order', OrderShema);
 
 
 // router.get('/api/v1/merchant/:merchant_id/records', loginRequired, getAllMerchantRecords) // get all records by merchant
-const getAllMerchantRecords = (req, res) => {
+exports.getAllMerchantRecords = (req, res) => {
   const limit = parseInt(req.query.limit)
   const sort = { artist: req.query.sort }
   const offset = parseInt(req.query.offset)
   const merchant = req.params.merchant_id
 
   Record.find({ _createdBy: merchant })
-  .limit(limit)
-  .sort(sort)
-  .skip(offset)
-  .exec((err, data) => {
-    if(err) {
-      res.status(400).json({
-        error_message: "Request failed",
-        response_code: 400
-      })
-    } else {
-      res.json(data)
-    }
-  })
+    .limit(limit)
+    .sort(sort)
+    .skip(offset)
+    .exec((err, data) => {
+      if (err) {
+        res.status(400).json({
+          error_message: "Request failed",
+          response_code: 400
+        })
+      } else {
+        res.json(data)
+      }
+    })
 }
 
 
 
 // router.get('/api/v1/orders/merchant/:merchant_id', loginRequired, getAllMerchantOrders) // get all orders by merchant PRIVATE - find by _createdBY
 
-const getAllMerchantOrders = (req, res) => {
+exports.getAllMerchantOrders = (req, res) => {
   const limit = parseInt(req.query.limit)
-  const sort = { created_date : req.query.sort }
+  const sort = { created_date: req.query.sort }
   const offset = parseInt(req.query.offset)
   const merchant = req.params.merchant_id
 
-  Order.find( { merchant_id : merchant } )
-  .limit(limit)
-  .sort(sort)
-  .skip(offset)
-  .exec((err, orders) => {
-      if(err) {
-        res.status(400).json({ 
+  Order.find({ merchant_id: merchant })
+    .limit(limit)
+    .sort(sort)
+    .skip(offset)
+    .exec((err, orders) => {
+      if (err) {
+        res.status(400).json({
           error_message: "Check merchant id",
           response_code: 400
         })
@@ -66,13 +66,13 @@ const getAllMerchantOrders = (req, res) => {
 
 // router.get('/api/v1/merchant/:merchant_id', loginRequired, getMerchant) // get merchant information 
 
-const getMerchant = (req, res) => {
+exports.getMerchant = (req, res) => {
   const merchId = req.params.merchant_id
 
   Merchant.findById(merchId)
     .exec((err, merchant) => {
-      if(err) {
-        res.status(400).json({ 
+      if (err) {
+        res.status(400).json({
           error_message: "Check merchant id",
           response_code: 400
         })
@@ -103,20 +103,20 @@ const getMerchant = (req, res) => {
 
 // router.put('/api/v1/merchant/:merchant_id', loginRequired, updateMerchant) // update merchant account information PRIVATE
 
-const updateMerchantById = (req, res) => {
+exports.updateMerchantById = (req, res) => {
   const merchParam = req.params.merchant_id;
   const merchant_id = { _id: req.params.merchant_id };
   const updatedInfo = req.body;
   const merchId = req.user._id;
 
-  Merchant.findOneAndUpdate(merchant_id, updatedInfo, { new: true }, (err, merchant) =>{
-    if(merchId !== merchParam) {
-      res.status(404).json({ 
+  Merchant.findOneAndUpdate(merchant_id, updatedInfo, { new: true }, (err, merchant) => {
+    if (merchId !== merchParam) {
+      res.status(404).json({
         error_message: "Insufficient privileges",
         response_code: 404
       })
     } else {
-    res.json(merchant)
+      res.json(merchant)
     }
   })
 }
@@ -130,16 +130,16 @@ const updateMerchantById = (req, res) => {
 
 // DELETE RECORD BY ID
 
-const deleteRecord = (req, res) => {
+exports.deleteRecord = (req, res) => {
   const recId = { _id: req.params.record_id }
   Record.remove(recId, (err, data) => {
-    if(err) {
-      res.status(404).json({ 
+    if (err) {
+      res.status(404).json({
         error_message: "Record was not found. Check record ID.",
         response_code: 404
       })
     } else {
-      res.json({  
+      res.json({
         success_message: 'Record deleted',
         response_code: 200
       })
@@ -147,10 +147,3 @@ const deleteRecord = (req, res) => {
   })
 };
 
-module.exports = {
-  getAllMerchantRecords,
-  getAllMerchantOrders,
-  getMerchant,
-  updateMerchantById,
-  deleteRecord
-}
